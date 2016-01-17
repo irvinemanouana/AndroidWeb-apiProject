@@ -43,6 +43,7 @@ public class InscriptionActivity extends AppCompatActivity {
     }
     @OnClick(R.id.create)
     public void sendForm() {
+        
         username = edtusername.getText().toString();
         email = edtemail.getText().toString();
         name = edtpassword.getText().toString();
