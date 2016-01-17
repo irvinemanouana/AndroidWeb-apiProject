@@ -7,7 +7,11 @@
     android:fitsSystemWindows="true"
     tools:context="com.dev.christopher.events.LoginActivity"
     android:background="@drawable/bodybackground">
-
+    <ImageView
+        android:src="@mipmap/ic_launcher_logo"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
     <LinearLayout
         android:gravity="center_vertical"
         android:layout_width="match_parent"
