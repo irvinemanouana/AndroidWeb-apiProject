@@ -1,8 +1,16 @@
 package com.dev.christopher.events.WebServices;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
+import com.dev.christopher.events.Config.Config;
+import com.dev.christopher.events.InscriptionActivity;
 import com.dev.christopher.events.Json.BodyParser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -10,18 +18,40 @@ import java.util.Objects;
 /**
  * Created by Christopher on 17/01/2016.
  */
-public class SignUp extends AsyncTask<Objects,Void,String> {
-
-    String url = "http://localhost:8080/api/user";
-    String json ="{'username':'nana','password':'azerty','email':'nana@gmail.com','name':'nanou','firstname':'loulou'}" ;
+public class SignUp extends AsyncTask<Objects,Void,JSONObject> {
+    String username ="Peter";
+    String email="spiderman@gmail.com";
+    String password ="azerty";
+    String name = "peter";
+    String firstname ="parker";
+    String url = new Config().URL_API;
+    String json = "{\"username\":\"" + username + "\",\"password\":\""+password+"\",\"email\":\""+email+"\",\"name\":\""+name+"\",\"firstname\":\""+firstname+"\"}";
     @Override
-    protected String doInBackground(Objects... params) {
+    protected JSONObject doInBackground(Objects... params) {
+        Log.d("Json",json);
+        JSONObject jsonObject = null;
         BodyParser bodyParser = new BodyParser();
         try {
             bodyParser.post(url,json);
+            String data = bodyParser.getResponse(url);
+            jsonObject = new JSONObject(data);
+            Log.d("data",data);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return null;
+        return jsonObject;
+    }
+
+    @Override
+    protected void onPostExecute(JSONObject jsonObject) {
+        super.onPostExecute(jsonObject);
+        if (jsonObject.has("error")){
+            Log.d("error","error");
+        }else {
+            Log.d("cool","cool");
+        }
+
     }
 }

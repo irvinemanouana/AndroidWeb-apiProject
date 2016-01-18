@@ -22,9 +22,19 @@ public class BodyParser {
         RequestBody body = RequestBody.create(JSON_TYPE,json);
         Request request = new Request.Builder().url(url).post(body).build();
         Response response =  client.newCall(request).execute();
-        Log.d("response",response.body().toString());
+        Log.d("response",String.valueOf(response.body()));
     }
+
     public void get(String url,String json){
 
+    }
+
+    public String getResponse(String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        return response.body().string();
     }
 }
