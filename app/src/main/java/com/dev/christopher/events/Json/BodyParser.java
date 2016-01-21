@@ -3,7 +3,6 @@ package com.dev.christopher.events.Json;
 import android.util.Log;
 
 import java.io.IOException;
-
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -19,10 +18,16 @@ public class BodyParser {
     OkHttpClient client = new OkHttpClient();
 
     public void post(String url,String json) throws IOException {
-        RequestBody body = RequestBody.create(JSON_TYPE,json);
-        Request request = new Request.Builder().url(url).post(body).build();
+        RequestBody body = RequestBody.create(JSON_TYPE, json);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
         Response response =  client.newCall(request).execute();
-        Log.d("response",String.valueOf(response.body()));
+       String data =response.body().toString();
+
+        Log.d("data",getResponse(url));
+
     }
 
     public void get(String url,String json){

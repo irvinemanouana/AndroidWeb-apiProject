@@ -1,12 +1,9 @@
 package com.dev.christopher.events.WebServices;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.dev.christopher.events.Config.Config;
-import com.dev.christopher.events.InscriptionActivity;
 import com.dev.christopher.events.Json.BodyParser;
 
 import org.json.JSONException;
@@ -19,11 +16,12 @@ import java.util.Objects;
  * Created by Christopher on 17/01/2016.
  */
 public class SignUp extends AsyncTask<Objects,Void,JSONObject> {
-    String username ="Peter";
-    String email="spiderman@gmail.com";
+
+    String username ="superman";
+    String email="sup@gmail.com";
     String password ="azerty";
-    String name = "peter";
-    String firstname ="parker";
+    String name = "clark";
+    String firstname ="kent";
     String url = new Config().URL_API;
     String json = "{\"username\":\"" + username + "\",\"password\":\""+password+"\",\"email\":\""+email+"\",\"name\":\""+name+"\",\"firstname\":\""+firstname+"\"}";
     @Override

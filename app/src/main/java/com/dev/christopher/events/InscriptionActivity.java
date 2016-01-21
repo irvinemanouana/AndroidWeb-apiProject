@@ -1,17 +1,22 @@
 package com.dev.christopher.events;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
+import com.dev.christopher.events.Config.Config;
+import com.dev.christopher.events.Json.BodyParser;
 import com.dev.christopher.events.WebServices.SignUp;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,8 +48,8 @@ public class InscriptionActivity extends AppCompatActivity {
 
     /*@Bind(R.id.create)
     Button signup;*/
-    String username,email,name,lastname,password;
-
+    String username,email,name,firstname,password;
+    String url = new Config().URL_API;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,9 +66,42 @@ public class InscriptionActivity extends AppCompatActivity {
         username = edtusername.getText().toString();
         email = edtemail.getText().toString();
         name = edtpassword.getText().toString();
-        lastname = edtlastname.getText().toString();
+        firstname = edtlastname.getText().toString();
         password = edtpassword.getText().toString();
         new SignUp().execute();
     }
+    class SignUpClass extends AsyncTask<Objects,Void,JSONObject> {
+
+        String json = "{\"username\":\"" + username + "\",\"password\":\""+password+"\",\"email\":\""+email+"\",\"name\":\""+name+"\",\"firstname\":\""+firstname+"\"}";
+        @Override
+        protected JSONObject doInBackground(Objects... params) {
+            Log.d("Json",json);
+            JSONObject jsonObject = null;
+            BodyParser bodyParser = new BodyParser();
+            try {
+                bodyParser.post(url,json);
+                String data = bodyParser.getResponse(url);
+                jsonObject = new JSONObject(data);
+                Log.d("data",data);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return jsonObject;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            super.onPostExecute(jsonObject);
+            if (jsonObject.has("error")){
+                Log.d("error","error");
+            }else {
+                Log.d("cool","cool");
+            }
+
+        }
+    }
+
 
 }

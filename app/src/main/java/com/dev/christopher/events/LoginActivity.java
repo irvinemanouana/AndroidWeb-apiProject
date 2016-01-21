@@ -1,6 +1,7 @@
 package com.dev.christopher.events;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +16,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.dev.christopher.events.Config.Config;
+import com.dev.christopher.events.Json.BodyParser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.Objects;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -23,8 +33,8 @@ public class LoginActivity extends AppCompatActivity {
     Button newaccount;
 
 
-    @Bind(R.id.input_email)
-    EditText edtMail;
+    @Bind(R.id.input_username)
+    EditText edtusername;
     @Bind(R.id.input_layout_email)
     TextInputLayout textInputLayoutemail;
 
@@ -36,8 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.buttonlog)
     Button buttonlog;
 
-    String email;
-    String password;
+    String username,password,json;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +74,18 @@ public class LoginActivity extends AppCompatActivity {
     }
     public void SignIn(){
 
-        if (edtMail.getText().toString().isEmpty()){
+        if (edtusername.getText().toString().isEmpty()){
             textInputLayoutemail.setError(getString(R.string.error_email));
 
         }if (edtPassword.getText().toString().isEmpty()){
             textInputLayoutpassword.setError(getString(R.string.error_password));
         }else{
+
             textInputLayoutemail.setErrorEnabled(false);
             textInputLayoutpassword.setErrorEnabled(false);
+            username = edtusername.getText().toString();
+            password = edtPassword.getText().toString();
+            new SignIn().execute();
         }
     }
 
@@ -97,5 +110,31 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    class SignIn extends AsyncTask<Objects,Void,JSONObject>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            json = "{\"username\":\""+username+"\",\"password\":\""+password+"\"}";
+
+        }
+
+        @Override
+        protected JSONObject doInBackground(Objects... params) {
+            JSONObject response = null;
+            BodyParser bodyParser = new BodyParser();
+            try {
+                bodyParser.post(new Config().URL_API, json);
+                String data = bodyParser.getResponse(new Config().URL_API);
+                response = new JSONObject(data);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.d("response",String.valueOf(response));
+            return response;
+
+        }
     }
 }
