@@ -1,13 +1,14 @@
 package com.dev.christopher.events;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -17,12 +18,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.dev.christopher.events.Config.Config;
+import com.dev.christopher.events.Hash.Sha512Convert;
 import com.dev.christopher.events.Json.BodyParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 import butterknife.Bind;
@@ -32,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.fab)
     Button newaccount;
 
+    @Bind(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
 
     @Bind(R.id.input_username)
     EditText edtusername;
@@ -46,7 +51,8 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.buttonlog)
     Button buttonlog;
 
-    String username,password,json;
+    String username, password, json;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +62,11 @@ public class LoginActivity extends AppCompatActivity {
         buttonlog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             SignIn();
+                try {
+                    SignIn();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
 
             }
         });
@@ -65,26 +75,30 @@ public class LoginActivity extends AppCompatActivity {
         newaccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),InscriptionActivity.class);
+                Intent intent = new Intent(getApplicationContext(), InscriptionActivity.class);
                 startActivity(intent);
             }
         });
         /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
-    }
-    public void SignIn(){
 
-        if (edtusername.getText().toString().isEmpty()){
+    }
+
+    public void SignIn() throws NoSuchAlgorithmException {
+
+        if (edtusername.getText().toString().isEmpty()) {
             textInputLayoutemail.setError(getString(R.string.error_email));
 
-        }if (edtPassword.getText().toString().isEmpty()){
+        }
+        if (edtPassword.getText().toString().isEmpty()) {
             textInputLayoutpassword.setError(getString(R.string.error_password));
-        }else{
-
+        } else {
+            Sha512Convert convert = new Sha512Convert();
             textInputLayoutemail.setErrorEnabled(false);
             textInputLayoutpassword.setErrorEnabled(false);
             username = edtusername.getText().toString();
-            password = edtPassword.getText().toString();
+            //edtPassword.getText().toString()
+            password = convert.hash(edtPassword.getText().toString());
             new SignIn().execute();
         }
     }
@@ -111,11 +125,15 @@ public class LoginActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    class SignIn extends AsyncTask<Objects,Void,JSONObject>{
+
+
+
+
+    class SignIn extends AsyncTask<Objects, Void, JSONObject> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            json = "{\"username\":\""+username+"\",\"password\":\""+password+"\"}";
+            json = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
 
         }
 
@@ -124,17 +142,33 @@ public class LoginActivity extends AppCompatActivity {
             JSONObject response = null;
             BodyParser bodyParser = new BodyParser();
             try {
-                bodyParser.post(new Config().URL_API, json);
-                String data = bodyParser.getResponse(new Config().URL_API);
-                response = new JSONObject(data);
+                String post = bodyParser.post(new Config().URL_API_LOGIN, json);
+                response = new JSONObject(post);
+
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.d("response",String.valueOf(response));
+            Log.d("response", String.valueOf(response));
             return response;
 
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            super.onPostExecute(jsonObject);
+            Log.d("json", String.valueOf(jsonObject));
+            JSONObject myObject = jsonObject;
+            try {
+                if (myObject.has("error")){
+                    Snackbar.make(coordinatorLayout, myObject.getString("error"), Snackbar.LENGTH_SHORT).show();
+                }else {
+                    Snackbar.make(coordinatorLayout,"Good",Snackbar.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

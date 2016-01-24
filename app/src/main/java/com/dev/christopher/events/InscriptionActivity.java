@@ -65,10 +65,10 @@ public class InscriptionActivity extends AppCompatActivity {
 
         username = edtusername.getText().toString();
         email = edtemail.getText().toString();
-        name = edtpassword.getText().toString();
+        name = edtname.getText().toString();
         firstname = edtlastname.getText().toString();
         password = edtpassword.getText().toString();
-        new SignUp().execute();
+        new SignUpClass().execute();
     }
     class SignUpClass extends AsyncTask<Objects,Void,JSONObject> {
 
@@ -79,10 +79,11 @@ public class InscriptionActivity extends AppCompatActivity {
             JSONObject jsonObject = null;
             BodyParser bodyParser = new BodyParser();
             try {
-                bodyParser.post(url,json);
+               String response = bodyParser.post(url, json);
+
                 String data = bodyParser.getResponse(url);
                 jsonObject = new JSONObject(data);
-                Log.d("data",data);
+                Log.d("data",response);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {

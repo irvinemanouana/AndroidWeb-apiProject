@@ -13,20 +13,20 @@ import okhttp3.Response;
  * Created by Christopher on 17/01/2016.
  */
 public class BodyParser {
-    //Parsing
+
+
     public static final MediaType JSON_TYPE = MediaType.parse("application/json; charset=utf-8");
     OkHttpClient client = new OkHttpClient();
 
-    public void post(String url,String json) throws IOException {
+    public String post(String url,String json) throws IOException {
         RequestBody body = RequestBody.create(JSON_TYPE, json);
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
                 .build();
         Response response =  client.newCall(request).execute();
-       String data =response.body().toString();
-
-        Log.d("data",getResponse(url));
+        String data =response.body().string();
+        return data;
 
     }
 

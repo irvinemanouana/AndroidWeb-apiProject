@@ -13,5 +13,6 @@
     <string name="error_email">veuillez saisir une adresse mail</string>
     <string name="error_password">renseignez votre mot de passe</string>
     <string name="username">Pseudo</string>
+    <string name="title_activity_main">MainActivity</string>
 
 </resources>
