@@ -14,5 +14,9 @@
     <string name="error_password">renseignez votre mot de passe</string>
     <string name="username">Pseudo</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="send">Envoyer</string>
+    <string name="cat">Catégorie</string>
+
+
 
 </resources>

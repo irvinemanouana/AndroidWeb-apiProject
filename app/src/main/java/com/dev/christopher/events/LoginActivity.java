@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.dev.christopher.events.Config.Config;
 import com.dev.christopher.events.Hash.Sha512Convert;
 import com.dev.christopher.events.Json.BodyParser;
+import com.dev.christopher.events.session.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,13 +53,29 @@ public class LoginActivity extends AppCompatActivity {
     Button buttonlog;
 
     String username, password, json;
+    SessionManager sessionManager;
+    String jsusername,jsname,jsfirstname,jsemail;
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("hello login ","Hi");
+        sessionManager = new SessionManager(getApplicationContext());
+        sessionManager.checkLogin();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        sessionManager= new SessionManager(getApplicationContext());
         buttonlog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,7 +167,6 @@ public class LoginActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.d("response", String.valueOf(response));
             return response;
 
         }
@@ -164,7 +180,15 @@ public class LoginActivity extends AppCompatActivity {
                 if (myObject.has("error")){
                     Snackbar.make(coordinatorLayout, myObject.getString("error"), Snackbar.LENGTH_SHORT).show();
                 }else {
+                    jsusername = jsonObject.getString("username");
+                    jsname =jsonObject.getString("name");
+                    jsfirstname =jsonObject.getString("firstname");
+                    jsemail =jsonObject.getString("email");
+                    sessionManager.CreateUserSession(jsusername,jsname,jsfirstname,jsemail);
                     Snackbar.make(coordinatorLayout,"Good",Snackbar.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
