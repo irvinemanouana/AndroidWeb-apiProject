@@ -1,9 +1,12 @@
 package com.dev.christopher.events.session;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.dev.christopher.events.MainActivity;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -55,13 +58,15 @@ public class SessionManager {
     public boolean isLoggedIn(){
         return pref.getBoolean(value_login, false);
     }
-    public void checkLogin(){
+    public boolean checkLogin(){
         // Check login status
 
         if(pref.getBoolean(value_login,false)==true){
             Log.d("session","true");
+             return true;
         }else {
             Log.d("session","false");
+            return false;
         }
 
     }

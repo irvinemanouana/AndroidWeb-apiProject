@@ -60,9 +60,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("hello login ","Hi");
         sessionManager = new SessionManager(getApplicationContext());
-        sessionManager.checkLogin();
+
+        if (sessionManager.checkLogin()==true){
+            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
