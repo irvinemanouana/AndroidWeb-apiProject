@@ -79,6 +79,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+
         sessionManager= new SessionManager(getApplicationContext());
         buttonlog.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +157,7 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             json = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
+            Log.d("json",json);
 
         }
 

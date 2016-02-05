@@ -26,6 +26,7 @@ public class BodyParser {
                 .build();
         Response response =  client.newCall(request).execute();
         String data =response.body().string();
+        Log.d("data",data);
         return data;
 
     }

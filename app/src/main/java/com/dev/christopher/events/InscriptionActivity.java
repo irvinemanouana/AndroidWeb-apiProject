@@ -1,5 +1,6 @@
 package com.dev.christopher.events;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -69,6 +70,10 @@ public class InscriptionActivity extends AppCompatActivity {
         firstname = edtlastname.getText().toString();
         password = edtpassword.getText().toString();
         new SignUpClass().execute();
+        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        intent.putExtra("username",username);
+        startActivity(intent);
+        finish();
     }
     class SignUpClass extends AsyncTask<Objects,Void,JSONObject> {
 
