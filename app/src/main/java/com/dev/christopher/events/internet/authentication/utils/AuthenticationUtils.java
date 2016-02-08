@@ -1,6 +1,6 @@
 package com.dev.christopher.events.internet.authentication.utils;
 
-import okhttp3.Credentials;
+import com.squareup.okhttp.Credentials;
 
 /**
  * Created by nicolas on 08/02/2016.
