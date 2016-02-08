@@ -1,7 +1,5 @@
 package com.dev.christopher.events;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,9 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.dev.christopher.events.Config.Config;
+import com.dev.christopher.events.Config.Configs;
 import com.dev.christopher.events.Hash.Sha512Convert;
 import com.dev.christopher.events.Json.BodyParser;
 import com.dev.christopher.events.session.SessionManager;
@@ -166,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
             JSONObject response = null;
             BodyParser bodyParser = new BodyParser();
             try {
-                String post = bodyParser.post(new Config().URL_API_LOGIN, json);
+                String post = bodyParser.post(new Configs().URL_API_LOGIN, json);
                 response = new JSONObject(post);
 
             } catch (IOException e) {

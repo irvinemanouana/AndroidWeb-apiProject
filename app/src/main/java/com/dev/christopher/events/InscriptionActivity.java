@@ -9,9 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.dev.christopher.events.Config.Config;
+import com.dev.christopher.events.Config.Configs;
 import com.dev.christopher.events.Json.BodyParser;
-import com.dev.christopher.events.WebServices.SignUp;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,7 +49,7 @@ public class InscriptionActivity extends AppCompatActivity {
     /*@Bind(R.id.create)
     Button signup;*/
     String username,email,name,firstname,password;
-    String url = new Config().URL_API;
+    String url = new Configs().URL_API;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

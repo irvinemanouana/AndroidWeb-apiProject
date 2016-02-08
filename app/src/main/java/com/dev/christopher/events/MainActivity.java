@@ -1,8 +1,5 @@
 package com.dev.christopher.events;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -14,9 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.dev.christopher.events.Config.Config;
+import com.dev.christopher.events.Config.Configs;
 import com.dev.christopher.events.Json.BodyParser;
 import com.dev.christopher.events.session.SessionManager;
 
@@ -78,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             BodyParser bodyParser = new BodyParser();
 
             try {
-               String string= bodyParser.post(new Config().URL_API_CAT,json);
+               String string= bodyParser.post(new Configs().URL_API_CAT,json);
                 jsonObject= new JSONObject(string);
             } catch (IOException e) {
                 e.printStackTrace();

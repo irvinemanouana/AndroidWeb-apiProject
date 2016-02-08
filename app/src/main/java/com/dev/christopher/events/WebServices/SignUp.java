@@ -3,7 +3,7 @@ package com.dev.christopher.events.WebServices;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.dev.christopher.events.Config.Config;
+import com.dev.christopher.events.Config.Configs;
 import com.dev.christopher.events.Json.BodyParser;
 
 import org.json.JSONException;
@@ -22,7 +22,7 @@ public class SignUp extends AsyncTask<Objects,Void,JSONObject> {
     String password ="azerty";
     String name = "clark";
     String firstname ="kent";
-    String url = new Config().URL_API;
+    String url = new Configs().URL_API;
     String json = "{\"username\":\"" + username + "\",\"password\":\""+password+"\",\"email\":\""+email+"\",\"name\":\""+name+"\",\"firstname\":\""+firstname+"\"}";
     @Override
     protected JSONObject doInBackground(Objects... params) {
