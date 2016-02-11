@@ -5,23 +5,29 @@ package com.dev.christopher.events.Models;
  */
 public class Category {
     private String name;
-
-    public Category(String name) {
-        this.name = name;
-    }
+    private String createdAt;
+    private String updatedAt;
+    private String _id;
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public String get_id() {
+        return _id;
     }
 
     @Override
     public String toString() {
-        return "Category{" +
-                "name='" + name + '\'' +
-                '}';
+        return  name ;
+
     }
 }

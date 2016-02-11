@@ -49,7 +49,7 @@ public class InscriptionActivity extends AppCompatActivity {
     /*@Bind(R.id.create)
     Button signup;*/
     String username,email,name,firstname,password;
-    String url = new Configs().URL_API;
+    String url = Configs.WEB.URL.URL_API;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +69,7 @@ public class InscriptionActivity extends AppCompatActivity {
         firstname = edtlastname.getText().toString();
         password = edtpassword.getText().toString();
         new SignUpClass().execute();
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
         intent.putExtra("username",username);
         startActivity(intent);
         finish();

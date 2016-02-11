@@ -17,6 +17,8 @@ import android.widget.EditText;
 import com.dev.christopher.events.Config.Configs;
 import com.dev.christopher.events.Hash.Sha512Convert;
 import com.dev.christopher.events.Json.BodyParser;
+import com.dev.christopher.events.internet.authentication.OAuthToken;
+import com.dev.christopher.events.managers.UserManager;
 import com.dev.christopher.events.session.SessionManager;
 
 import org.json.JSONException;
@@ -28,6 +30,7 @@ import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.RetrofitError;
 
 public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.fab)
@@ -59,11 +62,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         sessionManager = new SessionManager(getApplicationContext());
 
-        if (sessionManager.checkLogin()==true){
+       /* if (sessionManager.checkLogin()==true){
             Intent intent = new Intent(getApplicationContext(),MainActivity.class);
             startActivity(intent);
             finish();
-        }
+        }*/
     }
 
     @Override
@@ -82,15 +85,9 @@ public class LoginActivity extends AppCompatActivity {
         buttonlog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    SignIn();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-
+                loginAndGetToken();
             }
         });
-
 
         newaccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,12 +96,11 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
+
 
     }
 
-    public void SignIn() throws NoSuchAlgorithmException {
+    public void loginAndGetToken()  {
 
         if (edtusername.getText().toString().isEmpty()) {
             textInputLayoutemail.setError(getString(R.string.error_email));
@@ -113,13 +109,25 @@ public class LoginActivity extends AppCompatActivity {
         if (edtPassword.getText().toString().isEmpty()) {
             textInputLayoutpassword.setError(getString(R.string.error_password));
         } else {
-            Sha512Convert convert = new Sha512Convert();
+
             textInputLayoutemail.setErrorEnabled(false);
             textInputLayoutpassword.setErrorEnabled(false);
             username = edtusername.getText().toString();
-            //edtPassword.getText().toString()
-            password = convert.hash(edtPassword.getText().toString());
-            new SignIn().execute();
+            password = edtPassword.getText().toString();
+            UserManager.getInstance().asyncLogin(username, password, new UserManager.CallbackOAuthAPI() {
+                @Override
+                public void onSuccess(OAuthToken token) {
+                    Log.d("Token",String.valueOf(token));
+                    Intent intent = new Intent(getApplicationContext(),CreateEventActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onFailure(RetrofitError error) {
+                    Log.d("Error",String.valueOf(error));
+                }
+            });
         }
     }
 
@@ -146,57 +154,4 @@ public class LoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
-
-    class SignIn extends AsyncTask<Objects, Void, JSONObject> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            json = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
-            Log.d("json",json);
-
-        }
-
-        @Override
-        protected JSONObject doInBackground(Objects... params) {
-            JSONObject response = null;
-            BodyParser bodyParser = new BodyParser();
-            try {
-                String post = bodyParser.post(new Configs().URL_API_LOGIN, json);
-                response = new JSONObject(post);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return response;
-
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            super.onPostExecute(jsonObject);
-            Log.d("json", String.valueOf(jsonObject));
-            JSONObject myObject = jsonObject;
-            try {
-                if (myObject.has("error")){
-                    Snackbar.make(coordinatorLayout, myObject.getString("error"), Snackbar.LENGTH_SHORT).show();
-                }else {
-                    jsusername = jsonObject.getString("username");
-                    jsname =jsonObject.getString("name");
-                    jsfirstname =jsonObject.getString("firstname");
-                    jsemail =jsonObject.getString("email");
-                    sessionManager.CreateUserSession(jsusername,jsname,jsfirstname,jsemail);
-                    Snackbar.make(coordinatorLayout,"Good",Snackbar.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }

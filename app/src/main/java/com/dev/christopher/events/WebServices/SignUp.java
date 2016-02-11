@@ -22,7 +22,7 @@ public class SignUp extends AsyncTask<Objects,Void,JSONObject> {
     String password ="azerty";
     String name = "clark";
     String firstname ="kent";
-    String url = new Configs().URL_API;
+    String url = Configs.WEB.URL.URL_API;
     String json = "{\"username\":\"" + username + "\",\"password\":\""+password+"\",\"email\":\""+email+"\",\"name\":\""+name+"\",\"firstname\":\""+firstname+"\"}";
     @Override
     protected JSONObject doInBackground(Objects... params) {

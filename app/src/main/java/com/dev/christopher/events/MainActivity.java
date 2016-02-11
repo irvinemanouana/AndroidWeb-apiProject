@@ -1,6 +1,6 @@
 package com.dev.christopher.events;
 
-import android.os.AsyncTask;
+
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
@@ -12,19 +12,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.dev.christopher.events.Config.Configs;
-import com.dev.christopher.events.Json.BodyParser;
+import com.dev.christopher.events.Generator.ServiceGenerator;
+import com.dev.christopher.events.Models.Category;
+import com.dev.christopher.events.internet.webclients.ICategoryClient;
 import com.dev.christopher.events.session.SessionManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 
 public class MainActivity extends AppCompatActivity {
     @Bind(R.id.listView)
@@ -55,35 +57,27 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cat = editText.getText().toString();
-                new Categories().execute();
+                ICategoryClient client = ServiceGenerator.createService(ICategoryClient.class);
+                client.getAllCategory(new Callback<List<Category>>() {
+                    @Override
+                    public void success(List<Category> categories, Response response) {
+                        Log.d("categories",String.valueOf(categories));
+
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.d("categories",String.valueOf(error));
+                    }
+                });
+
+
+
             }
         });
 
     }
-    class Categories extends AsyncTask <Objects,Void,JSONObject>{
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            json = "{\"name\":\"" + cat + "\"}";
-        }
 
-        @Override
-        protected JSONObject doInBackground(Objects... params) {
-            JSONObject  jsonObject = null;
-            BodyParser bodyParser = new BodyParser();
 
-            try {
-               String string= bodyParser.post(new Configs().URL_API_CAT,json);
-                jsonObject= new JSONObject(string);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Log.d("json",String.valueOf(jsonObject));
-            return jsonObject;
-        }
-    }
 
 }

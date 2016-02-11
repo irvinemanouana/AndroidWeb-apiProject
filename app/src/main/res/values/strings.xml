@@ -16,7 +16,8 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="send">Envoyer</string>
     <string name="cat">Catégorie</string>
-
-
+    <string name="title_activity_create_event">CreateEventActivity</string>
+    <string name="libelle">Titre</string>
+    <string name="description">Description</string>
 
 </resources>

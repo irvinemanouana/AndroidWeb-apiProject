@@ -20,6 +20,7 @@ public class Configs {
             public static final String URL_API_LOGIN    = BASE_HOST + "/api/auth/login";
 
             public static final String URL_API_CAT      = BASE_HOST + "/api/category";
+            public static final String OAUTH_TOKEN      = BASE_HOST+"";
         }
 
         public static class HEADERS {

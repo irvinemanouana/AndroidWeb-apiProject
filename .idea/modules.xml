@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AndroidWeb-apiProject.iml" filepath="$PROJECT_DIR$/AndroidWeb-apiProject.iml" />
       <module fileurl="file://$PROJECT_DIR$/Events.iml" filepath="$PROJECT_DIR$/Events.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

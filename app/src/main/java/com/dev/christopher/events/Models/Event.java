@@ -6,34 +6,57 @@ import java.util.ArrayList;
  * Created by Christopher on 16/01/2016.
  */
 public class Event {
-    private ArrayList<User>users;
-    private User user;
-    private Category category;
+    private String title;
+    private String categoryId;
+    private String description;
+    private String date;
 
-    public Event(ArrayList<User> users, User user, Category category) {
-        this.users = users;
-        this.user = user;
-        this.category = category;
+    public Event(String title, String categoryId, String description, String date) {
+        this.title = title;
+        this.categoryId = categoryId;
+        this.description = description;
+        this.date = date;
     }
 
-    public ArrayList<User> getUsers() {
-        return users;
+    public String getTitle() {
+        return title;
     }
 
-    public User getUser() {
-        return user;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     @Override
     public String toString() {
         return "Event{" +
-                "users=" + users +
-                ", user=" + user +
-                ", category=" + category +
+                "title='" + title + '\'' +
+                ", categoryId='" + categoryId + '\'' +
+                ", description='" + description + '\'' +
+                ", date='" + date + '\'' +
                 '}';
     }
 }
