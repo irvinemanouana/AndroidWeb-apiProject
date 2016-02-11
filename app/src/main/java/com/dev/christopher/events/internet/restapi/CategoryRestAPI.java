@@ -5,7 +5,6 @@ import com.dev.christopher.events.internet.webclients.ICategoryClient;
 
 import java.util.List;
 
-import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -31,7 +30,7 @@ public class CategoryRestAPI extends BaseRestAPI {
 
     /************************************* PUBLIC REST METHOD *************************************/
     public void getCategories(final CallbackEventAPI<List<Category>> callback){
-        mCategoryClient.getAllCategory(new Callback<List<Category>>(){
+        mCategoryClient.getAllCategory(new CallbackRetrofit<List<Category>>(){
             @Override
             public void success(List<Category> categories, Response response) {
                 callback.onSuccess(categories);
@@ -39,6 +38,7 @@ public class CategoryRestAPI extends BaseRestAPI {
 
             @Override
             public void failure(RetrofitError error) {
+                super.failure(error);
                 callback.onFailure(error);
             }
         });

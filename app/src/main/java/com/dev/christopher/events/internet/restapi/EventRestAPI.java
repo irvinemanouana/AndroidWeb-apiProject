@@ -3,7 +3,6 @@ package com.dev.christopher.events.internet.restapi;
 import com.dev.christopher.events.Models.Event;
 import com.dev.christopher.events.internet.webclients.IEventClient;
 
-import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -29,7 +28,7 @@ public class EventRestAPI extends BaseRestAPI {
 
     /************************************* PUBLIC REST METHOD *************************************/
     public void createEvent(Event event, final CallbackEventAPI<Event> callback){
-        mEventClient.createEvent(event, new Callback<Event>() {
+        mEventClient.createEvent(event, new CallbackRetrofit<Event>() {
             @Override
             public void success(Event event, Response response) {
                 callback.onSuccess(event);
@@ -37,6 +36,7 @@ public class EventRestAPI extends BaseRestAPI {
 
             @Override
             public void failure(RetrofitError error) {
+                super.failure(error);
                 callback.onFailure(error);
             }
         });
