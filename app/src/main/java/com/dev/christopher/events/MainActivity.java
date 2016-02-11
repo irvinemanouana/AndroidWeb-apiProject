@@ -12,9 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.dev.christopher.events.Generator.ServiceGenerator;
+import com.dev.christopher.events.internet.restapi.BaseRestAPI.CallbackEventAPI;
+import com.dev.christopher.events.internet.restapi.CategoryRestAPI;
 import com.dev.christopher.events.Models.Category;
-import com.dev.christopher.events.internet.webclients.ICategoryClient;
 import com.dev.christopher.events.session.SessionManager;
 
 
@@ -23,9 +23,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.Callback;
 import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -57,22 +55,17 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ICategoryClient client = ServiceGenerator.createService(ICategoryClient.class);
-                client.getAllCategory(new Callback<List<Category>>() {
+                CategoryRestAPI.getInstance().getCategories(new CallbackEventAPI<List<Category>>() {
                     @Override
-                    public void success(List<Category> categories, Response response) {
-                        Log.d("categories",String.valueOf(categories));
-
+                    public void onSuccess(List<Category> categories) {
+                        Log.d("categories", String.valueOf(categories));
                     }
 
                     @Override
-                    public void failure(RetrofitError error) {
-                        Log.d("categories",String.valueOf(error));
+                    public void onFailure(RetrofitError error) {
+                        Log.d("categories", String.valueOf(error));
                     }
                 });
-
-
-
             }
         });
 

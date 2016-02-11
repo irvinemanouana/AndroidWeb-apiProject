@@ -1,8 +1,6 @@
 package com.dev.christopher.events;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,11 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.dev.christopher.events.Generator.ServiceGenerator;
+import com.dev.christopher.events.internet.restapi.BaseRestAPI;
+import com.dev.christopher.events.internet.restapi.CategoryRestAPI;
+import com.dev.christopher.events.internet.restapi.EventRestAPI;
 import com.dev.christopher.events.Models.Category;
 import com.dev.christopher.events.Models.Event;
-import com.dev.christopher.events.internet.webclients.ICategoryClient;
-import com.dev.christopher.events.internet.webclients.IEventClient;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,9 +24,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit.Callback;
 import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class CreateEventActivity extends AppCompatActivity {
     @Bind(R.id.spinnerCat)
@@ -70,35 +66,34 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
     public void createEvent(Event event){
-        IEventClient iEventClient = ServiceGenerator.createService(IEventClient.class);
-        iEventClient.createEvent(event, new Callback<Event>() {
+        EventRestAPI.getInstance().createEvent(event, new BaseRestAPI.CallbackEventAPI<Event>() {
             @Override
-            public void success(Event event, Response response) {
+            public void onSuccess(Event event) {
                 Log.d("Event",String.valueOf(event));
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void onFailure(RetrofitError error) {
                 Log.d("error",String.valueOf(error));
             }
         });
     }
 
     public void getCategories(){
-        ICategoryClient client = ServiceGenerator.createService(ICategoryClient.class);
-        client.getAllCategory(new Callback<List<Category>>() {
+        CategoryRestAPI.getInstance().getCategories(new BaseRestAPI.CallbackEventAPI<List<Category>>() {
             @Override
-            public void success(List<Category> categories, Response response) {
+            public void onSuccess(List<Category> categories) {
                 Log.d("categories", String.valueOf(categories));
                 init(categories);
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void onFailure(RetrofitError error) {
                 Log.d("categories", String.valueOf(error));
             }
         });
     }
+
     public String initDate(){
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();

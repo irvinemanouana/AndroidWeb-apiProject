@@ -40,9 +40,6 @@ public class Configs {
             public static final String CURRENT_USER_REFRESH_TOKEN   = "CURRENT_USER_REFRESH_TOKEN";
 
             public static final String ACCOUNT_USERNAME             = "ACCOUNT_USERNAME";
-
-
-
         }
     }
 
