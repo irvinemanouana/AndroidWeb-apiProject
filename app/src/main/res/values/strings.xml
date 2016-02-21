@@ -19,5 +19,7 @@
     <string name="title_activity_create_event">CreateEventActivity</string>
     <string name="libelle">Titre</string>
     <string name="description">Description</string>
+    <string name="participation">Participer</string>
+    <string name="Supprimer">Supprimer</string>
 
 </resources>

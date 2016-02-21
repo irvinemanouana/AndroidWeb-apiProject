@@ -1,5 +1,7 @@
 package com.dev.christopher.events.internet.restapi;
 
+import android.util.Log;
+
 import com.dev.christopher.events.Models.Category;
 import com.dev.christopher.events.internet.webclients.ICategoryClient;
 
@@ -33,6 +35,7 @@ public class CategoryRestAPI extends BaseRestAPI {
         mCategoryClient.getAllCategory(new CallbackRetrofit<List<Category>>(){
             @Override
             public void success(List<Category> categories, Response response) {
+                Log.d("List<Category>",String.valueOf(categories));
                 callback.onSuccess(categories);
             }
 

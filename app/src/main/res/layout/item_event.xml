@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_margin="8dp"
+        android:text="title"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/activity_horizontal_margin"
+        android:id="@+id/titleEvent"
+        android:layout_gravity="top|start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_margin="8dp"
+        android:layout_gravity="top|start"
+        android:textColor="@color/colorBlack"
+        android:id="@+id/date"
+        android:text="date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_margin="8dp"
+        android:textColor="@color/colorBlack"
+        android:text="desc"
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_margin="8dp"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/background_button"
+            android:text="@string/participation"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/delete"
+            android:layout_margin="8dp"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/background_button"
+            android:text="@string/Supprimer"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>
+
+
+</LinearLayout>

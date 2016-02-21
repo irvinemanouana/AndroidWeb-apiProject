@@ -1,5 +1,6 @@
 package com.dev.christopher.events;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -7,9 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.dev.christopher.events.Models.EventCreate;
 import com.dev.christopher.events.internet.restapi.BaseRestAPI;
 import com.dev.christopher.events.internet.restapi.CategoryRestAPI;
 import com.dev.christopher.events.internet.restapi.EventRestAPI;
@@ -41,40 +44,47 @@ public class CreateEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
         ButterKnife.bind(this);
+        Button button = (Button)findViewById(R.id.create);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                titletxt = title.getText().toString();
+                desctxt = description.getText().toString();
+                datetxt = initDate();
+                EventCreate event = new EventCreate(titletxt, idcat, desctxt, datetxt);
+                Log.d("Event", event.toString());
+                EventRestAPI.getInstance().createEvent(event, new BaseRestAPI.CallbackEventAPI<Event>() {
+                    @Override
+                    public void onSuccess(Event event) {
+                        Log.d("Event created 1", String.valueOf(event));
+                    }
+
+                    @Override
+                    public void onFailure(RetrofitError error) {
+                        Log.d("error create event", String.valueOf(error));
+                    }
+                });
+                //Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                //startActivity(intent);
+                //finish();
+            }
+        });
         getCategories();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-    @OnClick(R.id.create)
-    public void createEventClick(){
-        titletxt = title.getText().toString();
-        desctxt = description.getText().toString();
-        datetxt=initDate();
-        Event event = new Event(titletxt,idcat,desctxt,datetxt);
-        Log.d("Event",event.toString());
-        createEvent(event);
-    }
 
-    public void createEvent(Event event){
+    public void createEvent(EventCreate event){
         EventRestAPI.getInstance().createEvent(event, new BaseRestAPI.CallbackEventAPI<Event>() {
             @Override
             public void onSuccess(Event event) {
-                Log.d("Event",String.valueOf(event));
+                Log.d("Event created 1",String.valueOf(event));
             }
 
             @Override
             public void onFailure(RetrofitError error) {
-                Log.d("error",String.valueOf(error));
+                Log.d("error create event",String.valueOf(error));
             }
         });
     }
@@ -95,8 +105,9 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
     public String initDate(){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
+        Log.d("date",dateFormat.format(date));
         return dateFormat.format(date);
     }
 

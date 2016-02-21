@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(OAuthToken token) {
                     Log.d("Token",String.valueOf(token));
-                    Intent intent = new Intent(getApplicationContext(),CreateEventActivity.class);
+                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
