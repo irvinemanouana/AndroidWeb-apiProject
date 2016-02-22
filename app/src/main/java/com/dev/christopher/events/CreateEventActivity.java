@@ -51,7 +51,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 titletxt = title.getText().toString();
                 desctxt = description.getText().toString();
                 datetxt = initDate();
-                EventCreate event = new EventCreate(titletxt, idcat, desctxt, datetxt);
+                EventCreate event = new EventCreate(titletxt, idcat, datetxt, desctxt);
                 Log.d("Event", event.toString());
                 EventRestAPI.getInstance().createEvent(event, new BaseRestAPI.CallbackEventAPI<Event>() {
                     @Override
@@ -105,7 +105,7 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
     public String initDate(){
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         Date date = new Date();
         Log.d("date",dateFormat.format(date));
         return dateFormat.format(date);
