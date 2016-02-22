@@ -8,6 +8,7 @@ import com.dev.christopher.events.internet.webclients.IEventClient;
 
 import java.util.List;
 
+import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -32,34 +33,35 @@ public class EventRestAPI extends BaseRestAPI {
     }
 
     /************************************* PUBLIC REST METHOD *************************************/
-    public void createEvent(EventCreate event, final CallbackEventAPI<Event> callback){
-        mEventClient.createEvent(event, new CallbackRetrofit<Event>() {
+    public void deleteEvent(String idEvent,final CallbackEventAPI<Event> callbackEventAPI){
+        mEventClient.deleteEvent(idEvent, new CallbackRetrofit<Event>() {
             @Override
             public void success(Event event, Response response) {
-                Log.d("Event create",event.toString());
-                callback.onSuccess(event);
+                Log.d("delete event",event.toString());
+                callbackEventAPI.onSuccess(event);
             }
 
             @Override
             public void failure(RetrofitError error) {
                 super.failure(error);
-                Log.d("Event create", String.valueOf(error));
-                callback.onFailure(error);
+                Log.d("delete error",String.valueOf(error));
+                callbackEventAPI.onFailure(error);
             }
         });
-
     }
-    public void deleteEvent(String idEvent,final CallbackEventAPI callbackEventAPI){
-        mEventClient.deleteEvent(idEvent, new CallbackRetrofit() {
+
+    public void createEvent(Event event,final Callback<Event> callback){
+        mEventClient.createEvent(event, new Callback<Event>() {
             @Override
-            public void success(Object o, Response response) {
-                callbackEventAPI.onSuccess(o);
+            public void success(Event event, Response response) {
+                Log.d("response ",event.toString());
+                callback.success(event, response);
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("delete failure", error.toString());
-                super.failure(error);
+                Log.d("response ",String.valueOf(error));
+                callback.failure(error);
             }
         });
     }

@@ -23,13 +23,13 @@ public interface IEventClient {
     //Create event
 
     @POST("/api/event")
-    public void createEvent(@Body EventCreate event, Callback<Event> response);
+    public void createEvent(@Body Event event, Callback<Event> response);
 
     @PUT("/api/event/{id}")
     public void putEvent( @Path("id") String id, Callback<Event> response);
 
     @DELETE("/api/event/{id}")
-    public void deleteEvent( @Path("id") String id, Callback response);
+    public void deleteEvent( @Path("id") String id, Callback<Event> response);
 
     @POST("/api/event/{id}/subscribe/{user}")
     public void subscribeToevent(@Path("id")String id_event,@Path("user")String id_user,Callback response);

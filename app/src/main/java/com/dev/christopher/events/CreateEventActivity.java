@@ -14,6 +14,7 @@ import android.widget.Spinner;
 
 import com.dev.christopher.events.Models.EventCreate;
 import com.dev.christopher.events.internet.restapi.BaseRestAPI;
+import com.dev.christopher.events.internet.restapi.CallbackRetrofit;
 import com.dev.christopher.events.internet.restapi.CategoryRestAPI;
 import com.dev.christopher.events.internet.restapi.EventRestAPI;
 import com.dev.christopher.events.Models.Category;
@@ -28,6 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class CreateEventActivity extends AppCompatActivity {
     @Bind(R.id.spinnerCat)
@@ -51,17 +53,18 @@ public class CreateEventActivity extends AppCompatActivity {
                 titletxt = title.getText().toString();
                 desctxt = description.getText().toString();
                 datetxt = initDate();
-                EventCreate event = new EventCreate(titletxt, idcat, desctxt, datetxt);
+                Event event = new Event(titletxt,desctxt,datetxt,"56a6a1bb3911c3fc019ead4d");
                 Log.d("Event", event.toString());
-                EventRestAPI.getInstance().createEvent(event, new BaseRestAPI.CallbackEventAPI<Event>() {
+                EventRestAPI.getInstance().createEvent(event, new CallbackRetrofit<Event>() {
                     @Override
-                    public void onSuccess(Event event) {
-                        Log.d("Event created 1", String.valueOf(event));
+                    public void success(Event event, Response response) {
+                        Log.d("response App",event.toString());
                     }
 
                     @Override
-                    public void onFailure(RetrofitError error) {
-                        Log.d("error create event", String.valueOf(error));
+                    public void failure(RetrofitError error) {
+                        Log.d("response App",String.valueOf(error));
+                        super.failure(error);
                     }
                 });
                 //Intent intent = new Intent(getApplicationContext(),MainActivity.class);
@@ -75,19 +78,7 @@ public class CreateEventActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    public void createEvent(EventCreate event){
-        EventRestAPI.getInstance().createEvent(event, new BaseRestAPI.CallbackEventAPI<Event>() {
-            @Override
-            public void onSuccess(Event event) {
-                Log.d("Event created 1",String.valueOf(event));
-            }
 
-            @Override
-            public void onFailure(RetrofitError error) {
-                Log.d("error create event",String.valueOf(error));
-            }
-        });
-    }
 
     public void getCategories(){
         CategoryRestAPI.getInstance().getCategories(new BaseRestAPI.CallbackEventAPI<List<Category>>() {
