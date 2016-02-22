@@ -53,8 +53,8 @@ public class CreateEventActivity extends AppCompatActivity {
                 titletxt = title.getText().toString();
                 desctxt = description.getText().toString();
                 datetxt = initDate();
-
-                EventCreate event = new EventCreate(titletxt, idcat, datetxt, desctxt);
+                
+                Event event = new Event(titletxt, desctxt, datetxt, idcat);
                 Log.d("Event", event.toString());
                 EventRestAPI.getInstance().createEvent(event, new CallbackRetrofit<Event>() {
                     @Override
