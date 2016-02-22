@@ -16,17 +16,15 @@ public class Event {
     private ArrayList members;
     private String creator;
     private String categoryId;
+    private Category category;
 
-    public Event(String title, String description, String date, String _id, int __v, String createdAt, ArrayList members, String creator, String categoryId) {
-        this.title = title;
-        this.description = description;
-        this.date = date;
-        this._id = _id;
-        this.__v = __v;
-        this.createdAt = createdAt;
-        this.members = members;
-        this.creator = creator;
-        this.categoryId = categoryId;
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getCategoryId() {
@@ -123,6 +121,8 @@ public class Event {
                 ", createdAt='" + createdAt + '\'' +
                 ", members=" + members +
                 ", creator='" + creator + '\'' +
+                ", categoryId='" + categoryId + '\'' +
+                ", category=" + category +
                 '}';
     }
 }

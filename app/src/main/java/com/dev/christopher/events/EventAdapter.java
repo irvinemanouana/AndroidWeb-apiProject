@@ -14,6 +14,7 @@ import com.dev.christopher.events.internet.restapi.BaseRestAPI;
 import com.dev.christopher.events.internet.restapi.EventRestAPI;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.RetrofitError;
@@ -22,6 +23,8 @@ import retrofit.RetrofitError;
  * Created by Christopher on 12/02/2016.
  */
 public class EventAdapter extends ArrayAdapter<Event> {
+    private ArrayList members;
+
     public EventAdapter(Context context, List<Event> events) {
         super(context,0, events);
     }
@@ -36,25 +39,36 @@ public class EventAdapter extends ArrayAdapter<Event> {
         TextView desc =(TextView) convertView.findViewById(R.id.description);
         TextView date =(TextView) convertView.findViewById(R.id.date);
         Button buttondelete =(Button) convertView.findViewById(R.id.delete);
-
+        Button buttonP = (Button) convertView.findViewById(R.id.subscribe);
         title.setText(event.getTitle());
         desc.setText(event.getDescription());
         date.setText(event.getDate());
+        /*members = event.getMembers();
+        int id_user;
+        if (members.size()==0)
+            buttondelete.setVisibility(View.GONE);
+        for (int i =0;i<members.size();i++){
+            Log.d("test", String.valueOf(members.get(i)));
+            if (members.get(i).equals("56bba9a65c4d2dba09a14f16"))
+                buttonP.setVisibility(View.GONE);
+            if (members.get(i).equals(""))
+                buttondelete.setVisibility(View.GONE);
+        }*/
 
         buttondelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventRestAPI.getInstance().deleteEvent(event.get_id(), new BaseRestAPI.CallbackEventAPI() {
-                    @Override
-                    public void onSuccess(Object o) {
-                        Log.d("delete", String.valueOf(o));
-                    }
+             EventRestAPI.getInstance().deleteEvent(event.get_id(), new BaseRestAPI.CallbackEventAPI<Event>() {
+                 @Override
+                 public void onSuccess(Event o) {
+                     Log.d("delete",event.toString());
+                 }
 
-                    @Override
-                    public void onFailure(RetrofitError error) {
-                        Log.d("delete error", String.valueOf(error));
-                    }
-                });
+                 @Override
+                 public void onFailure(RetrofitError error) {
+                    Log.d("delete",String.valueOf(error));
+                 }
+             });
             }
         });
         return convertView;
