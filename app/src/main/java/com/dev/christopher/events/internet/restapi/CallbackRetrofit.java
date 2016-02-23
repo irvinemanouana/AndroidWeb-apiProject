@@ -22,7 +22,7 @@ public abstract class CallbackRetrofit<T> implements Callback<T> {
     }
 
     private void logAuthentication(RetrofitError error){
-        if (BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG && error.getResponse() != null){
             String json =  new String(((TypedByteArray)error.getResponse().getBody()).getBytes());
             Log.v("CallbackRetrofit - failure", json);
         }
