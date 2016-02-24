@@ -6,6 +6,8 @@ import com.dev.christopher.events.Models.Event;
 import com.dev.christopher.events.Models.EventCreate;
 import com.dev.christopher.events.internet.webclients.IEventClient;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import retrofit.Callback;
@@ -37,33 +39,43 @@ public class EventRestAPI extends BaseRestAPI {
         mEventClient.deleteEvent(idEvent, new CallbackRetrofit<Event>() {
             @Override
             public void success(Event event, Response response) {
-                Log.d("delete event",event.toString());
+                Log.d("delete event", event.toString());
                 callbackEventAPI.onSuccess(event);
             }
 
             @Override
             public void failure(RetrofitError error) {
                 super.failure(error);
-                Log.d("delete error",String.valueOf(error));
+                Log.d("delete error", String.valueOf(error));
                 callbackEventAPI.onFailure(error);
             }
         });
     }
 
-    public void createEvent(Event event,final Callback<Event> callback){
+    public void createEvent(JSONObject event,final CallbackEventAPI<Event> callbackEventAPI){
         mEventClient.createEvent(event, new Callback<Event>() {
             @Override
             public void success(Event event, Response response) {
-                Log.d("response ",event.toString());
+                callbackEventAPI.onSuccess(event);
+            }
+            @Override
+            public void failure(RetrofitError error) {
+                callbackEventAPI.onFailure(error);
+            }
+        });
+
+            /*@Override
+            public void success(Event event, Response response) {
+                Log.d("response ", event.toString());
                 callback.success(event, response);
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("response ",String.valueOf(error));
+                Log.d("response ", String.valueOf(error));
                 callback.failure(error);
-            }
-        });
+            }*/
+
     }
 
 

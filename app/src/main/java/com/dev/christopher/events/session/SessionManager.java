@@ -22,6 +22,7 @@ public class SessionManager {
     private int PREF_MODE =0;
     private static final String PREF_NAME = "session";
     private static final String value_username="username";
+    private static final String value_id="_id";
     private static final String value_name="name";
     private static final String value_firstname="firstname";
     private static final String value_email="email";
@@ -34,9 +35,10 @@ public class SessionManager {
         this.editor = pref.edit();
     }
 
-    public void CreateUserSession(String username,String name,String firstname,String email){
+    public void CreateUserSession(String id,String username,String name,String firstname,String email){
         editor.putBoolean(value_login,true);
         editor.putString(value_username, username);
+        editor.putString(value_id, id);
         editor.putString(value_name, name);
         editor.putString(value_firstname, firstname);
         editor.putString(value_email, email);
@@ -49,6 +51,7 @@ public class SessionManager {
         hashMap.put(value_email, pref.getString(value_email, null));
         hashMap.put(value_name, pref.getString(value_name, null));
         hashMap.put(value_firstname, pref.getString(value_firstname, null));
+        hashMap.put(value_id, pref.getString(value_id, null));
         return hashMap;
     }
     public void DestroyUserSession(){

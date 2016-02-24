@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.dev.christopher.events.Models.User;
 import com.dev.christopher.events.internet.restapi.BaseRestAPI;
 import com.dev.christopher.events.internet.restapi.UserRestAPI;
+import com.dev.christopher.events.session.SessionManager;
 
 import retrofit.RetrofitError;
 
@@ -25,6 +26,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         UserRestAPI.getInstance().getUser(new BaseRestAPI.CallbackEventAPI<User>() {
             @Override
             public void onSuccess(User user) {
+                SessionManager sessionManager = new SessionManager(getApplicationContext());
+                if (sessionManager.checkLogin()==false){
+                    sessionManager.CreateUserSession(user.get_id(),user.getUsername(),user.getName(),user.getFirstname(),user.getEmail());
+                }
                 changeActivity(MainActivity.class);
             }
 

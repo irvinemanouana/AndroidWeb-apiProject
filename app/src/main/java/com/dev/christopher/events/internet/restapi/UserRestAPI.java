@@ -1,5 +1,7 @@
 package com.dev.christopher.events.internet.restapi;
 
+import android.util.Log;
+
 import com.dev.christopher.events.Models.User;
 import com.dev.christopher.events.internet.webclients.IUserClient;
 
@@ -33,6 +35,7 @@ public class UserRestAPI extends BaseRestAPI {
         mUserClient.getUser(new CallbackRetrofit<User>() {
             @Override
             public void success(User user, Response response) {
+                Log.d("user",user.toString());
                 callback.onSuccess(user);
             }
 

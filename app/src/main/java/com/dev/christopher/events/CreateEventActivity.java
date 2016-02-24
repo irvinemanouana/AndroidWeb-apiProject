@@ -9,8 +9,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.dev.christopher.events.Models.EventCreate;
 import com.dev.christopher.events.internet.restapi.BaseRestAPI;
@@ -20,16 +23,21 @@ import com.dev.christopher.events.internet.restapi.EventRestAPI;
 import com.dev.christopher.events.Models.Category;
 import com.dev.christopher.events.Models.Event;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import retrofit.RetrofitError;
-import retrofit.client.Response;
+
 
 public class CreateEventActivity extends AppCompatActivity {
     @Bind(R.id.spinnerCat)
@@ -38,9 +46,10 @@ public class CreateEventActivity extends AppCompatActivity {
     EditText title;
     @Bind(R.id.edtdescription)
     EditText description;
+    @Bind(R.id.datep)
+    DatePicker datePicker;
     private String titletxt,desctxt,datetxt,idcat;
     public List<Category> categoriesList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,21 +62,47 @@ public class CreateEventActivity extends AppCompatActivity {
                 titletxt = title.getText().toString();
                 desctxt = description.getText().toString();
                 datetxt = initDate();
-                
-                Event event = new Event(titletxt, desctxt, datetxt, idcat);
-                Log.d("Event", event.toString());
-                EventRestAPI.getInstance().createEvent(event, new CallbackRetrofit<Event>() {
-                    @Override
-                    public void success(Event event, Response response) {
-                        Log.d("response App",event.toString());
-                    }
+                int year = datePicker.getYear();
+                int month = datePicker.getMonth();
+                int day = datePicker.getDayOfMonth();
 
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, day);
+
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+                String strDate = format.format(calendar.getTime());
+                Log.d("date new", strDate);
+
+
+
+                final Date currentTime = new Date();
+                final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+                sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                Log.d("UTC time: ",sdf.format(currentTime));
+                //System.out.println("UTC time: " + sdf.format(currentTime));
+
+                JSONObject eventobject = new JSONObject();
+                try {
+                    eventobject.put("title",titletxt);
+                    eventobject.put("categoryId",idcat);
+                    eventobject.put("description",desctxt);
+                    eventobject.put("date","2016-02-25T17:00:54.527Z");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.d("Json",eventobject.toString());
+                EventRestAPI.getInstance().createEvent(eventobject, new BaseRestAPI.CallbackEventAPI<Event>() {
                     @Override
-                    public void failure(RetrofitError error) {
-                        Log.d("response App",String.valueOf(error));
-                        super.failure(error);
+                    public void onSuccess(Event o) {
+                        Log.d("response create event ",o.toString());
+                    }
+                    @Override
+                    public void onFailure(RetrofitError error) {
+                        Log.d("response fail event ", String.valueOf(error));
+                        Toast.makeText(getApplicationContext(),"erreur est survenue",Toast.LENGTH_SHORT).show();
                     }
                 });
+
                 //Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                 //startActivity(intent);
                 //finish();

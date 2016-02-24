@@ -7,6 +7,7 @@ import java.util.Objects;
  * Created by Christopher on 16/01/2016.
  */
 public class Event {
+
     private String title;
     private String description;
     private String date;

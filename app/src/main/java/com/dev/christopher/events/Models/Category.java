@@ -27,11 +27,6 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" +
-                "name='" + name + '\'' +
-                ", createdAt='" + createdAt + '\'' +
-                ", updatedAt='" + updatedAt + '\'' +
-                ", _id='" + _id + '\'' +
-                '}';
+        return name;
     }
 }

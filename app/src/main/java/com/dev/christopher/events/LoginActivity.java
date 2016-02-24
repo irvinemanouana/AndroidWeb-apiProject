@@ -1,7 +1,7 @@
 package com.dev.christopher.events;
 
 import android.content.Intent;
-import android.os.AsyncTask;
+
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -13,20 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.dev.christopher.events.Config.Configs;
-import com.dev.christopher.events.Hash.Sha512Convert;
-import com.dev.christopher.events.Json.BodyParser;
+
 import com.dev.christopher.events.internet.authentication.OAuthToken;
 import com.dev.christopher.events.managers.UserManager;
 import com.dev.christopher.events.session.SessionManager;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -79,8 +71,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-
         sessionManager= new SessionManager(getApplicationContext());
         buttonlog.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(RetrofitError error) {
+                    Toast.makeText(getApplicationContext(),"Mot de passe ou mail invalide",Toast.LENGTH_SHORT).show();
                     Log.d("Error",String.valueOf(error));
                 }
             });
